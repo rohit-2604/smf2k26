@@ -1,9 +1,9 @@
-name: Scheduled Sync and Vercel Deploy
+name: Hourly Scheduled Sync and Vercel Deploy
 
 on:
   schedule:
-    # Runs automatically every day at midnight UTC
-    - cron: '0 0 * * *'
+    # Runs automatically at the 35th minute of every hour
+    - cron: '35 * * * *'
   workflow_dispatch:
     # Adds a manual button so you can test it instantly
 
