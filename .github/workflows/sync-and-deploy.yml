@@ -1,0 +1,31 @@
+name: Scheduled Sync and Vercel Deploy
+
+on:
+  schedule:
+    # Runs automatically every day at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Adds a manual button so you can test it instantly
+
+jobs:
+  sync-and-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Fork
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync Upstream Changes
+        uses: tgymnich/fork-sync@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main        # Your branch
+          head: main        # Upstream branch
+          owner: shibdyuti  # From your image
+          repo: smf2k26     # From your image
+          merge_method: merge
+
+      - name: Trigger Vercel Deployment
+        run: |
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
